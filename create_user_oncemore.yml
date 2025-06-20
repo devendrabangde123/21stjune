@@ -1,0 +1,9 @@
+---
+- name: my test playbook
+  hosts: all
+  become: true
+  tasks:
+    - name: creating one more user
+      user:
+        name: devendra
+

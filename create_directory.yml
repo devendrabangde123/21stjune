@@ -1,0 +1,9 @@
+---
+- name: my test playbook
+  hosts: all
+  become: true
+  tasks:
+    - name: create new directory
+      file:
+        path: /home/ansadmin/devdir
+        state: directory
