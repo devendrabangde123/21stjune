@@ -1,0 +1,20 @@
+---
+# tasks file for setup-apache-role
+- name: install {{rh_pkg}} packages
+  yum:
+    name: "{{ rh_pkg }}"
+    state: installed
+  when: ansible_os_family == "RedHat"
+  notify: start {{rh_pkg}} service
+
+- name: install {{db_pkg}} packages
+  apt:
+    name: "{{ db_pkg }}" 
+    state: present
+  when: ansible_os_family == "debian"
+  notify: start {{db_pkg}} service
+
+- name: copy index file
+  copy:
+    src: index.html
+    dest: /var/www/html
