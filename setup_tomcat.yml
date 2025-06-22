@@ -1,0 +1,38 @@
+---
+- name: my test playbook
+  hosts: all
+  become: true
+  tasks:
+    - name: install java for redhat
+      yum:
+        name: java
+        state: installed
+      when: ansible_os_family == "RedHat"  
+
+    - name: install java for debian
+      apt:
+        name: java
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Download Apache Tomcat
+      get_url:
+        url: https://dlcdn.apache.org/tomcat/tomcat-11/v11.0.8/bin/apache-tomcat-11.0.8.tar.gz
+        dest: /tmp/apache-tomcat.tar.gz
+
+    - name: Extract Apache Tomcat
+      unarchive:
+        src: /tmp/apache-tomcat.tar.gz
+        dest: /tmp
+        remote_src: yes
+
+    - name: Executable Permission
+      file:
+        path: /tmp/apache-tomcat-11.0.8/bin/startup.sh
+        mode: 0777
+
+    - name: Run .sh file
+      shell: nohup ./startup.sh
+      args:
+        chdir: /tmp/apache-tomcat-11.0.8/bin
+
